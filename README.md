@@ -19,7 +19,8 @@ Required packages: ldap and mockldap for testing
 
 ## Usage
 
-      Modify your settings to contain authentication backend, for example
+Modify your settings to contain authentication backend, for example
+
       AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', 'djangoauth-ldap-ad.backend.LDAPBackend')
       
 
@@ -32,7 +33,7 @@ Required packages: ldap and mockldap for testing
          }
 
       AUTH_LDAP_USER_FLAGS_BY_GROUP = {
-         "is_staff" : "CN=SoftwareDeveloper,DC=mydomain",
+         "is_staff" : "CN=SoftwareDeveloper,DC=mydomain", # Groups here are memberOf key values. If all the groups are found in single entry, then the flag is set to high. If no entry contains all required groups then the flag is set low.
          "is_superuser" : "CN=WebAdmin,DC=mydomain",
       }
       
