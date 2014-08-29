@@ -141,7 +141,7 @@ class LDAPSettings(object):
         'USER_FLAGS_BY_GROUP' : {},
         'USER_GROUPS_BY_GROUP' : {},
         'USER_ATTR_MAP' : {},
-        'TRACE_LEVEL' : 3,
+        'TRACE_LEVEL' : 0,
         'SASL_MECH' : 'DIGEST-MD5',
         'SEARCH_DN'     : "DC=localdomain,DC=ORG",
         'SEARCH_FILTER' : "(SAMAccountName=%(user)s)"
