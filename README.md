@@ -2,7 +2,7 @@ django-auth-ldap-ad
 ===================
 
 
-# Why
+## Why
 Django authentication backend for LDAP with Active Directory
 
 I created this project since i could not find proper way of doing binding with SASL using  [django-auth-ldap](https://pythonhosted.org/django-auth-ldap/).
@@ -12,12 +12,12 @@ Problem is that not all AD setups support TLS. So if SASL is not used the passwo
 While adding support for django-auth-ldap would have been one option, the library looked too heavy for my usecase, and googling gave me messy looking snippet from [snippets](https://djangosnippets.org/snippets/501/) i decided to make minimal AD-backend of my own.
 
 
-# Installation
+## Installation
 Copy the package to your django project root and add it to INSTALLED apps
 
 Required packages: ldap and mockldap for testing
 
-# Usage
+## Usage
 
       Modify your settings to contain authentication backend, for example
       AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', 'djangoauth-ldap-ad.backend.LDAPBackend')
@@ -49,48 +49,48 @@ Required packages: ldap and mockldap for testing
       }
 
 
-# References
+## References
 
-### CONNECTION_OPTIONS
+#### CONNECTION_OPTIONS
      Default : { ldap.OPT_REFERRALS : 0} 
   
 Set Ldap connection optios, as in [python-ldap options](http://www.python-ldap.org/doc/html/ldap.html#options).
 For the default option, see [python ldap faq question 12](http://www.python-ldap.org/faq.shtml).
 
 
-### SERVER_URI
+#### SERVER_URI
      Defaut : 'ldap://localhost',
 Comma separated list of servers to be used. Looped until one response is received (negative or positive).
 
-### USER_FLAGS_BY_GROUP
+#### USER_FLAGS_BY_GROUP
      Defaut : { }
 Dictonary of 'flag_name' : 'required groups'. Set user flags (True/False) if all required groups are found in single memberOf field entry.
 
-### USER_GROUPS_BY_GROUP
+#### USER_GROUPS_BY_GROUP
      Defaut : { }
 Dictonary of 'group name' : 'required groups'. Adds user to the group  if all required groups are found in single memberOf field entry.
 
 
 
-### USER_ATTR_MAP
+#### USER_ATTR_MAP
      Defaut : { }
 Dictonary of 'django user attribute' : 'ldap user attribute' . Maps given ldap attributes to django user attributes.
 
 
-### TRACE_LEVEL
+#### TRACE_LEVEL
      Defaut : 0
 Set python LDAP trace level, see [python-ldap](http://www.python-ldap.org/doc/html/ldap.html)
 
-### SASL_MECH
+#### SASL_MECH
      Defaut : "DIGEST-MD5"
 Set SASL mechanism, see python-ldap manual.
 
 
-### SEARCH_DN
+#### SEARCH_DN
      Defaut : "DC=localdomain,DC=ORG"
 When performing the user search what to use as startpoint, corresponds to '-b' options in [ldapsearch](http://linux.die.net/man/1/ldapsearch)
      
-### SEARCH_FILTER   
+#### SEARCH_FILTER   
       Default : 'SEARCH_FILTER' : "(SAMAccountName=%(user)s)"
 With what to filter the search results.
 
