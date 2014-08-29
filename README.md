@@ -21,7 +21,7 @@ Required packages: ldap and mockldap for testing
 
 Modify your settings to contain authentication backend, for example
 
-      AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', 'djangoauth-ldap-ad.backend.LDAPBackend')
+      AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', 'django-auth-ldap-ad.backend.LDAPBackend')
       
 
       AUTH_LDAP_SERVER_URI    = "ldap://localhost:389,ldap://remote_host.org:389"
