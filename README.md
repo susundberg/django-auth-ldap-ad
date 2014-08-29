@@ -54,10 +54,20 @@ Modify your settings to contain authentication backend, for example
          "email": "mail"
       }
 
+# Troubleshooting
+
+I use [tcpdump](http://linux.die.net/man/1/tcpdump) for checking what happens on the wire and and [ldapsearch](http://linux.die.net/man/1/ldapsearch) to debug the AD server functionality.
+
+For example:
+
+        ldapsearch -LLL -h "ldapdomainhere" -U "myuserid" -w "mypasswordid" -Y DIGEST-MD5 -b "dc=mydomain,dc=org" "SAMAccountName=extpausu"
+
+
 
 ## References
 
 #### CONNECTION_OPTIONS
+
      Default : { ldap.OPT_REFERRALS : 0} 
   
 Set Ldap connection optios, as in [python-ldap options](http://www.python-ldap.org/doc/html/ldap.html#options).
@@ -65,39 +75,55 @@ For the default option, see [python ldap faq question 12](http://www.python-ldap
 
 
 #### SERVER_URI
+
      Defaut : 'ldap://localhost',
+     
 Comma separated list of servers to be used. Looped until one response is received (negative or positive).
 
 #### USER_FLAGS_BY_GROUP
+
      Defaut : { }
+     
 Dictonary of 'flag_name' : 'required groups'. Set user flags (True/False) if all required groups are found in single memberOf field entry.
 
 #### USER_GROUPS_BY_GROUP
+
      Defaut : { }
+     
 Dictonary of 'group name' : 'required groups'. Adds user to the group  if all required groups are found in single memberOf field entry.
 
 
 
 #### USER_ATTR_MAP
+
      Defaut : { }
+     
 Dictonary of 'django user attribute' : 'ldap user attribute' . Maps given ldap attributes to django user attributes.
 
 
 #### TRACE_LEVEL
+
      Defaut : 0
+     
 Set python LDAP trace level, see [python-ldap](http://www.python-ldap.org/doc/html/ldap.html)
 
 #### SASL_MECH
+
      Defaut : "DIGEST-MD5"
+     
 Set SASL mechanism, see python-ldap manual.
 
 
 #### SEARCH_DN
+
      Defaut : "DC=localdomain,DC=ORG"
+     
 When performing the user search what to use as startpoint, corresponds to '-b' options in [ldapsearch](http://linux.die.net/man/1/ldapsearch)
      
 #### SEARCH_FILTER   
+
       Default : 'SEARCH_FILTER' : "(SAMAccountName=%(user)s)"
+      
 With what to filter the search results.
 
 # Tested with
