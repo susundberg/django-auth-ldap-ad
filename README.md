@@ -34,7 +34,10 @@ Modify your settings to contain authentication backend, for example
 
       AUTH_LDAP_USER_FLAGS_BY_GROUP = {
          "is_staff" : "CN=SoftwareDeveloper,DC=mydomain", # Groups here are memberOf key values. If all the groups are found in single entry, then the flag is set to high. If no entry contains all required groups then the flag is set low.
-         "is_superuser" : "CN=WebAdmin,DC=mydomain",
+         "is_superuser" : "CN=WebAdmin,DC=mydomain", 
+         # above example will match on entry "CN=WebAdmin,DC=mydomain,OU=People,OU=Users" 
+         # above will NOT match "CNWebAdmin,OU=People,OU=Users" (missing DC=mydomain).
+         
       }
       
       # All people that are to be staff are also to belong to this group  
