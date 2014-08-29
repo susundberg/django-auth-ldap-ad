@@ -19,8 +19,9 @@ Required packages: ldap and mockldap for testing
 
 ## Usage
 
-      Modify your settings to contain authentication backend, for example
-      AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', 'djangoauth-ldap-ad.backend.LDAPBackend')
+Modify your settings to contain authentication backend, for example
+
+      AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', 'django-auth-ldap-ad.backend.LDAPBackend')
       
 
       AUTH_LDAP_SERVER_URI    = "ldap://localhost:389,ldap://remote_host.org:389"
@@ -32,8 +33,13 @@ Required packages: ldap and mockldap for testing
          }
 
       AUTH_LDAP_USER_FLAGS_BY_GROUP = {
-         "is_staff" : "CN=SoftwareDeveloper,DC=mydomain",
-         "is_superuser" : "CN=WebAdmin,DC=mydomain",
+         # Groups on left side are memberOf key values. If all the groups are found in single entry, then the flag is set to
+         "is_staff" : "CN=SoftwareDeveloper,DC=mydomain", 
+          high. If no entry contains all required groups then the flag is set low.
+         "is_superuser" : "CN=WebAdmin,DC=mydomain", 
+         # above example will match on entry "CN=WebAdmin,DC=mydomain,OU=People,OU=Users" 
+         # above will NOT match "CN=WebAdmin,OU=People,OU=Users" (missing DC=mydomain).
+         
       }
       
       # All people that are to be staff are also to belong to this group  
@@ -48,10 +54,32 @@ Required packages: ldap and mockldap for testing
          "email": "mail"
       }
 
+# Troubleshooting
+
+I use [tcpdump](http://linux.die.net/man/1/tcpdump) for checking what happens on the wire and and [ldapsearch](http://linux.die.net/man/1/ldapsearch) to debug the AD server functionality.
+
+For example:
+
+        ldapsearch -LLL -h "ldapdomainhere" -U "myuserid" -w "mypasswordid" -Y DIGEST-MD5 -b "dc=mydomain,dc=org" "SAMAccountName=myusername"
+
+# What it does?
+
+    for server in configured_servers:
+       try to open connection and do bind
+        -> except: server is down -> continue
+        -> except: bad credentials -> return no login from LDAP backend
+        
+       try to dosearch and update django user preferences from ldap search response
+        -> except: no entry found -> return no login from LDAP backend
+        
+       
+       
+
 
 ## References
 
 #### CONNECTION_OPTIONS
+
      Default : { ldap.OPT_REFERRALS : 0} 
   
 Set Ldap connection optios, as in [python-ldap options](http://www.python-ldap.org/doc/html/ldap.html#options).
@@ -59,39 +87,55 @@ For the default option, see [python ldap faq question 12](http://www.python-ldap
 
 
 #### SERVER_URI
+
      Defaut : 'ldap://localhost',
+     
 Comma separated list of servers to be used. Looped until one response is received (negative or positive).
 
 #### USER_FLAGS_BY_GROUP
+
      Defaut : { }
+     
 Dictonary of 'flag_name' : 'required groups'. Set user flags (True/False) if all required groups are found in single memberOf field entry.
 
 #### USER_GROUPS_BY_GROUP
+
      Defaut : { }
+     
 Dictonary of 'group name' : 'required groups'. Adds user to the group  if all required groups are found in single memberOf field entry.
 
 
 
 #### USER_ATTR_MAP
+
      Defaut : { }
+     
 Dictonary of 'django user attribute' : 'ldap user attribute' . Maps given ldap attributes to django user attributes.
 
 
 #### TRACE_LEVEL
+
      Defaut : 0
+     
 Set python LDAP trace level, see [python-ldap](http://www.python-ldap.org/doc/html/ldap.html)
 
 #### SASL_MECH
+
      Defaut : "DIGEST-MD5"
+     
 Set SASL mechanism, see python-ldap manual.
 
 
 #### SEARCH_DN
+
      Defaut : "DC=localdomain,DC=ORG"
+     
 When performing the user search what to use as startpoint, corresponds to '-b' options in [ldapsearch](http://linux.die.net/man/1/ldapsearch)
      
 #### SEARCH_FILTER   
+
       Default : 'SEARCH_FILTER' : "(SAMAccountName=%(user)s)"
+      
 With what to filter the search results.
 
 # Tested with
