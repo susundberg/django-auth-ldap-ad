@@ -60,8 +60,20 @@ I use [tcpdump](http://linux.die.net/man/1/tcpdump) for checking what happens on
 
 For example:
 
-        ldapsearch -LLL -h "ldapdomainhere" -U "myuserid" -w "mypasswordid" -Y DIGEST-MD5 -b "dc=mydomain,dc=org" "SAMAccountName=extpausu"
+        ldapsearch -LLL -h "ldapdomainhere" -U "myuserid" -w "mypasswordid" -Y DIGEST-MD5 -b "dc=mydomain,dc=org" "SAMAccountName=myusername"
 
+# What it does?
+
+    for server in configured_servers:
+       try to open connection and do bind
+        -> except: server is down -> continue
+        -> except: bad credentials -> return no login from LDAP backend
+        
+       try to dosearch and update django user preferences from ldap search response
+        -> except: no entry found -> return no login from LDAP backend
+        
+       
+       
 
 
 ## References
