@@ -16,12 +16,12 @@ class LDAPBackend(object):
            self.ldap_settings = LDAPSettings()
         
         # For all configured servers try to connect
-        for server in self.ldap_settings.SERVER_URI.split(","):
+        for server in self.ldap_settings.SERVER_URI:
            
            # Use self.ldap_connection object if such is given for testing with mockldap.
            if hasattr( self, "ldap_connection" ) == False:
               try:
-                 ldap_connection = self.ldap_open_connection(server)
+                 ldap_connection = self.ldap_open_connection(server, username, password)
               except ldap.SERVER_DOWN:
                   continue
               except ldap.INVALID_CREDENTIALS:
@@ -58,7 +58,7 @@ class LDAPBackend(object):
                self.ldap_settings.SASL_MECH
             )
          
-         connection.sasl_interactive_bind_s("", sasl_auth)
+         ldap_session.sasl_interactive_bind_s("", sasl_auth)
          return ldap_session
     
     # Search for user, returns users info (dict)
