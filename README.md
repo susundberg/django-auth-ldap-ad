@@ -90,7 +90,9 @@ For the default option, see [python ldap faq question 12](http://www.python-ldap
 
      Defaut : 'ldap://localhost',
      
-Comma separated list of servers to be used. Looped until one response is received (negative or positive).
+Comma separated list of servers to be used. Looped until one response is received (negative or positive). 
+
+     Example : ['ldap://foo.org','ldap://bar.org']
 
 #### USER_FLAGS_BY_GROUP
 
