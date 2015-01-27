@@ -2,6 +2,8 @@
 import ldap,ldap.sasl
 from django.contrib.auth.models import User, Group
 
+import six
+
 
 class LDAPBackendException( Exception ):
    pass
@@ -112,11 +114,21 @@ class LDAPBackend(object):
                return True
           return False
 
+       def adjust_flags_for_groups( user, key, members_of, value ):
+          required_groups = value.lower().split(",")
+          passed = check_for_membership( members_of, required_groups )
+          setattr( user, key, passed )
+          return passed
+		  
        # set is_superuser
        for key, value in self.ldap_settings.USER_FLAGS_BY_GROUP.items():
-          # cn=superuser,ou=paulus
-          required_groups = value.lower().split(",")
-          setattr( user, key, check_for_membership( members_of, required_groups ))
+          if isinstance(value, six.string_types):
+			 adjust_flags_for_groups( user, key, members_of, value )
+			 continue
+			 
+          for v in value:
+             if adjust_flags_for_groups( user, key, members_of, v ):
+                break
        
        # We need to do save before we can use the groups (for m2m binding)
        user.save()
