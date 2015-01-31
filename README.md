@@ -34,11 +34,15 @@ Modify your settings to contain authentication backend, for example
 
       AUTH_LDAP_USER_FLAGS_BY_GROUP = {
          # Groups on left side are memberOf key values. If all the groups are found in single entry, then the flag is set to
-         "is_staff" : "CN=SoftwareDeveloper,DC=mydomain", 
-          high. If no entry contains all required groups then the flag is set low.
-         "is_superuser" : "CN=WebAdmin,DC=mydomain", 
-         # above example will match on entry "CN=WebAdmin,DC=mydomain,OU=People,OU=Users" 
-         # above will NOT match "CN=WebAdmin,OU=People,OU=Users" (missing DC=mydomain).
+         # True. If no entry contains all required groups then the flag is set False.
+         
+         "is_superuser" : ["CN=WebAdmin,DC=mydomain"], 
+         # Above example will match on entry "CN=WebAdmin,DC=mydomain,OU=People,OU=Users" 
+         # Above will NOT match "CN=WebAdmin,OU=People,OU=Users" (missing DC=mydomain).
+         
+         "is_staff" : ["CN=Developer,DC=mydomain","CN=Tester,DC=mydomain"] 
+         # True if one of the conditions is true.
+         
          
       }
       
@@ -98,15 +102,18 @@ Comma separated list of servers to be used. Looped until one response is receive
 
      Defaut : { }
      
-Dictonary of 'flag_name' : list of 'required groups'. Set user flags (True/False) if all required groups are found in single memberOf field entry.
-     
+Dictonary of 'flag_name' : list of 'required groups'. Set user flags (True/False) based on if requirement is met.
+
+The requirement is set met for 'required groups', if the (comma separated) groups are found from single memberOf field entry.
+If one of the list entries meets the requirement, then the list requirement is met. That is: on match, return True, otherwise, return False.
+    
      Example : { 'is_superuser' : [ 'cn=admins,cn=website,ou=IT', 'cn=sysadmin,ou=IT' ] }
 
 #### USER_GROUPS_BY_GROUP
 
      Defaut : { }
      
-Dictonary of 'group name' : list of 'required groups'. Adds user to the group  if all required groups are found in single memberOf field entry.
+Dictonary of 'group name' : list of 'required groups'. Adds user to the group if all requirement is met (see USER_FLAGS_BY_GROUP).
 
 
 
