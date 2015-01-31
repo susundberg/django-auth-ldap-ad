@@ -119,6 +119,17 @@ class LDAPBackendTest(TestCase):
         self.assertEqual( user_alice.is_superuser , False )
         self.assertEqual( user_alice.is_staff , True )
         
+    def test_user_flags_002(self):   
+        self._init_settings(
+            SEARCH_DN = "o=test",
+            USER_FLAGS_BY_GROUP = {'is_superuser' : ['cn=superuser,dc=test_not_found','cn=fake,cn=superuser,ou=foo'] 
+                                   }
+            )
+        
+        self.backend.authenticate(username='alice', password='alicepw')
+        user_alice = User.objects.get( username="alice" )
+        self.assertEqual( user_alice.is_superuser , True )
+        
     def test_user_groups(self):
        group_admin = Group.objects.create(name = "MyAdmins")
        group_pony = Group.objects.create(name = "MyPonies")
@@ -126,7 +137,7 @@ class LDAPBackendTest(TestCase):
        self._init_settings(
             SEARCH_DN = "o=test",
             USER_GROUPS_BY_GROUP = {'MyAdmins' : 'cn=superuser,dc=test_not_found', 
-                                   'MyPonies' : 'cn=fake,cn=superuser,ou=foo' }
+                                    'MyPonies' : 'cn=fake,cn=superuser,ou=foo' }
             )
 
        self.backend.authenticate(username='alice', password='alicepw')
@@ -144,5 +155,17 @@ class LDAPBackendTest(TestCase):
        user_alice = User.objects.get( username="alice" )
        self.assertEqual( user_alice.groups.filter(name="MyAdmins").count(), 0)
        self.assertEqual( user_alice.groups.filter(name="MyPonies").count(), 1)
+       
+    def test_user_groups_001(self):
+       """ Test for removal list input """
+       group_pony = Group.objects.create(name = "MyPonies")
+       self._init_settings(
+            SEARCH_DN = "o=test",
+            USER_GROUPS_BY_GROUP = { 'MyPonies' : ('cn=superuser,dc=test_not_found', 'cn=fake,cn=superuser,ou=foo') }
+            )
+       self.backend.authenticate(username='alice', password='alicepw')
+       user_alice = User.objects.get( username="alice" )
+       self.assertEqual( user_alice.groups.filter(name="MyPonies").count(), 1)
+       
        
        

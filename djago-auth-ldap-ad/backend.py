@@ -95,9 +95,7 @@ class LDAPBackend(object):
        members_of = []
        for group in info['memberOf']:
           members_of.append( group.lower().split(",") )
-          
        
-
        # Set first_name or last_name or email ..
        for key, value in self.ldap_settings.USER_ATTR_MAP.items():
           if value in info:
@@ -105,41 +103,38 @@ class LDAPBackend(object):
 
        
 
-       def check_for_membership( members_of, required_groups):
-          # check for all members of groups
-          for member_of_group in members_of:
-             # check that all required groups are in this membership
-             requirement_fullfilled = all( required_group in member_of_group for required_group in required_groups )
-             if requirement_fullfilled:
-               return True
-          return False
+       def check_for_membership( members_of, required_groups_options ):
+         """ Check for membership in given groups,
+             Parameter:
+                required_groups_options - can be string or list of strings. Each entry must 
+                                       be comma-separeted groupnames """
+                                       
+         if isinstance(required_groups_options, six.string_types):
+           required_groups_options = [required_groups_options]
+          
+         for required_groups in required_groups_options:
+            required_groups = required_groups.lower().split(",")
+            # check for all members of groups
+            for member_of_group in members_of:
+               # check that all required groups are in this membership
+               requirement_fullfilled = all( (required_group in member_of_group) for required_group in required_groups )
+               if requirement_fullfilled:
+                  return True
+         return False
 
-       def adjust_flags_for_groups( user, key, members_of, value ):
-          required_groups = value.lower().split(",")
-          passed = check_for_membership( members_of, required_groups )
-          setattr( user, key, passed )
-          return passed
-		  
-       # set is_superuser
-       for key, value in self.ldap_settings.USER_FLAGS_BY_GROUP.items():
-          if isinstance(value, six.string_types):
-			 adjust_flags_for_groups( user, key, members_of, value )
-			 continue
-			 
-          for v in value:
-             if adjust_flags_for_groups( user, key, members_of, v ):
-                break
+       # set is_superuser etc
+       for wanted_property, requirements in self.ldap_settings.USER_FLAGS_BY_GROUP.items():
+         has_property = check_for_membership( members_of, requirements )
+         setattr( user, wanted_property, has_property )
        
        # We need to do save before we can use the groups (for m2m binding)
        user.save()
-       
        # user.groups.add( Group.objects.get(name = "ODAdmin"))
-       for key, value in self.ldap_settings.USER_GROUPS_BY_GROUP.items():
-          required_groups = value.lower().split(",")
-          if check_for_membership( members_of, required_groups ):
-              user.groups.add( Group.objects.get(name=key) )
+       for wanted_group, requirements in self.ldap_settings.USER_GROUPS_BY_GROUP.items():
+          if check_for_membership( members_of, requirements ):
+              user.groups.add( Group.objects.get(name=wanted_group) )
           else:
-              user.groups.remove( Group.objects.get(name=key) )
+              user.groups.remove( Group.objects.get(name=wanted_group) )
        user.save()
        return user
        
