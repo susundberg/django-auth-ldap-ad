@@ -98,13 +98,15 @@ Comma separated list of servers to be used. Looped until one response is receive
 
      Defaut : { }
      
-Dictonary of 'flag_name' : 'required groups'. Set user flags (True/False) if all required groups are found in single memberOf field entry.
+Dictonary of 'flag_name' : list of 'required groups'. Set user flags (True/False) if all required groups are found in single memberOf field entry.
+     
+     Example : { 'is_superuser' : [ 'cn=admins,cn=website,ou=IT', 'cn=sysadmin,ou=IT' ] }
 
 #### USER_GROUPS_BY_GROUP
 
      Defaut : { }
      
-Dictonary of 'group name' : 'required groups'. Adds user to the group  if all required groups are found in single memberOf field entry.
+Dictonary of 'group name' : list of 'required groups'. Adds user to the group  if all required groups are found in single memberOf field entry.
 
 
 
