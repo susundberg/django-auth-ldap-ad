@@ -157,7 +157,7 @@ class LDAPBackendTest(TestCase):
        self.assertEqual( user_alice.groups.filter(name="MyPonies").count(), 1)
        
     def test_user_groups_001(self):
-       """ Test for removal list input """
+       """ Test for groups list requirements """
        group_pony = Group.objects.create(name = "MyPonies")
        self._init_settings(
             SEARCH_DN = "o=test",
