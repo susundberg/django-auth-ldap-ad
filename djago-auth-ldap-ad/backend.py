@@ -17,9 +17,13 @@ class LDAPBackend(object):
         if hasattr( self, "ldap_settings") == False:
            self.ldap_settings = LDAPSettings()
         
+        if isinstance(self.ldap_settings.SERVER_URI, six.string_types):
+          servers_urls = [self.ldap_settings.SERVER_URI]
+        else:
+          servers_urls = self.ldap_settings.SERVER_URI
+
         # For all configured servers try to connect
-        for server in self.ldap_settings.SERVER_URI:
-           
+        for server in servers_urls:
            # Use self.ldap_connection object if such is given for testing with mockldap.
            if hasattr( self, "ldap_connection" ) == False:
               try:
@@ -28,7 +32,7 @@ class LDAPBackend(object):
                   continue
               except ldap.INVALID_CREDENTIALS:
                   return None
-           else:
+           else: #end up here with mock
               ldap_connection = self.ldap_connection
               
            for key,value in self.ldap_settings.CONNECTION_OPTIONS.items():

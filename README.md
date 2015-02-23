@@ -24,7 +24,7 @@ Modify your settings to contain authentication backend, for example
       AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', 'django-auth-ldap-ad.backend.LDAPBackend')
       
 
-      AUTH_LDAP_SERVER_URI    = "ldap://localhost:389,ldap://remote_host.org:389"
+      AUTH_LDAP_SERVER_URI    = ["ldap://localhost:389","ldap://remote_host.org:389"]
       AUTH_LDAP_SEARCH_DN     = "DC=mydomain,DC=org"
       AUTH_LDAP_USER_ATTR_MAP = {
          "first_name": "cn",
@@ -92,9 +92,9 @@ For the default option, see [python ldap faq question 12](http://www.python-ldap
 
 #### SERVER_URI
 
-     Defaut : 'ldap://localhost',
+     Defaut : ['ldap://localhost'],
      
-Comma separated list of servers to be used. Looped until one response is received (negative or positive). 
+List of servers to be used. Looped until one response is received (negative or positive). 
 
      Example : ['ldap://foo.org','ldap://bar.org']
 

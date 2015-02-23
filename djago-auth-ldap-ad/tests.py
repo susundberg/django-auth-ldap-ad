@@ -65,6 +65,21 @@ class LDAPBackendTest(TestCase):
         self.backend.authenticate(username='alice', password='alicepw')
         self.assertEqual(self.ldapobj.get_option('opt1'), 'value1')
 
+    def test_server_uri_string(self):
+        self._init_settings(
+            SEARCH_DN = "o=test",
+            SERVER_URI = "ldap://localhost/"
+        )
+        self.backend.authenticate(username='alice', password='alicepw')
+      
+    def test_server_uri_list(self):
+        self._init_settings(
+            SEARCH_DN = "o=test",
+            SERVER_URI = ["ldap://127.0.0.1", "ldap://localhost/" ]
+        )
+        self.backend.authenticate(username='alice', password='alicepw')
+        
+        
     def test_bad_person(self):
         self._init_settings(
             SEARCH_DN = "o=test",
