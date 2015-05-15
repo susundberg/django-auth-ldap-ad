@@ -97,7 +97,7 @@ class LDAPBackend(object):
           user.set_unusable_password()
        # refresh memberships
        members_of = []
-       for group in info['memberOf']:
+       for group in info.get('memberOf',[]):
           members_of.append( group.lower().split(",") )
        
        # Set first_name or last_name or email ..
