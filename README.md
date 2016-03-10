@@ -26,11 +26,6 @@ Modify your settings to contain authentication backend, for example
 
       AUTH_LDAP_SERVER_URI    = ["ldap://localhost:389","ldap://remote_host.org:389"]
       AUTH_LDAP_SEARCH_DN     = "DC=mydomain,DC=org"
-      AUTH_LDAP_USER_ATTR_MAP = {
-         "first_name": "cn",
-         "last_name": "sn",
-         "email": "email"
-         }
 
       AUTH_LDAP_USER_FLAGS_BY_GROUP = {
          # Groups on left side are memberOf key values. If all the groups are found in single entry, then the flag is set to
