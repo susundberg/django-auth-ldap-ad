@@ -15,7 +15,7 @@ While adding support for django-auth-ldap would have been one option, the librar
 ## Installation
 Copy the package to your django project root and add it to INSTALLED apps
 
-Required packages: ldap and mockldap for testing. See [.travis.yml][https://github.com/susundberg/django-auth-ldap-ad/blob/master/.travis.yml] for how to build is done in CI service. 
+Required packages: ldap and mockldap for testing. See [.travis.yml](https://github.com/susundberg/django-auth-ldap-ad/blob/master/.travis.yml) for how to build is done in CI service. 
 
 ## Usage
 
