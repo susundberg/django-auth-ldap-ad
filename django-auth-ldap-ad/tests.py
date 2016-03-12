@@ -4,7 +4,7 @@
 import mockldap
 import ldap
 
-import django_ldap_ad.backend as backend
+import backend 
 
 from django.test import TestCase
 from django.utils import unittest
