@@ -144,9 +144,12 @@ When performing the user search what to use as startpoint, corresponds to '-b' o
       
 With what to filter the search results.
 
-# Tested with
+# Python 3?
+Sorry no luck. Seems like python-ldap package is not python3 compatible, and rather than porting it some people made new library ldap3, that is something totally different. As i am no longer working actively with this project i am not doing the porting. But please, if you want i would be more than happy to merge such changes. 
 
-Django 1.4 and Debian 7
+# Tested with
+* There is CI running on the repo at https://travis-ci.org/susundberg/django-auth-ldap-ad/ -- its currently testing with Python 2.7 and with Django-1.4 and Django-1.8 (both beeing LTS).
+* Used in production enviroment in 2015 : Django 1.4 and Debian 7
 
 
 
