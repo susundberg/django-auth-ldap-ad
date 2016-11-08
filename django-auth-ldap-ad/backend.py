@@ -75,8 +75,6 @@ class LDAPBackend(object):
 
     # Search for user, returns users info (dict)
     def ldap_search_user(self, connection, username, password):
-
-        result_set = []
         ldap_result_id = connection.search(
             self.ldap_settings.SEARCH_DN,
             ldap.SCOPE_SUBTREE,

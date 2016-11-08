@@ -1,12 +1,10 @@
 
 
 import mockldap
-import ldap
-
 import backend
 
 from django.test import TestCase
-from django.utils import unittest
+
 
 from django.contrib.auth.models import User, Group
 
@@ -50,10 +48,6 @@ class LDAPBackendTest(TestCase):
 
     def tearDown(self):
         # Stop patching ldap.initialize and reset state.
-        self.mockldap.stop()
-        del self.ldapobj
-
-    def tearDown(self):
         self.mockldap.stop()
         del self.ldapobj
 
@@ -150,8 +144,6 @@ class LDAPBackendTest(TestCase):
 
     def test_user_groups(self):
         group_admin = Group.objects.create(name="MyAdmins")
-        group_pony = Group.objects.create(name="MyPonies")
-
         self._init_settings(
             SEARCH_DN="o=test",
             USER_GROUPS_BY_GROUP={'MyAdmins': 'cn=superuser,dc=test_not_found',
@@ -176,7 +168,6 @@ class LDAPBackendTest(TestCase):
 
     def test_user_groups_001(self):
         """ Test for groups list requirements """
-        group_pony = Group.objects.create(name="MyPonies")
         self._init_settings(
             SEARCH_DN="o=test",
             USER_GROUPS_BY_GROUP={
