@@ -17,7 +17,7 @@ class LDAPBackendException(Exception):
 class LDAPBackend(object):
 
     def authenticate(self, username=None, password=None):
-        if hasattr(self, "ldap_settings") == False:
+        if not hasattr(self, "ldap_settings"):
             self.ldap_settings = LDAPSettings()
 
         if isinstance(self.ldap_settings.SERVER_URI, six.string_types):
@@ -29,7 +29,7 @@ class LDAPBackend(object):
         for server in servers_urls:
             # Use self.ldap_connection object if such is given for testing with
             # mockldap.
-            if hasattr(self, "ldap_connection") == False:
+            if not hasattr(self, "ldap_connection"):
                 try:
                     ldap_connection = self.ldap_open_connection(
                         server, username, password)

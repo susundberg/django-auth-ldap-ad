@@ -17,6 +17,8 @@ install:
  - pip install --verbose Django==$DJANGO_VERSION
  - pip install --verbose -r testing-ci/requirements.txt 
 
+before_script:
+ - pep8 --ignore=E501 django-auth-ldap-ad/
  
 script: PYTHONPATH=$TRAVIS_BUILD_DIR python testing-ci/manage.py test django-auth-ldap-ad
 
