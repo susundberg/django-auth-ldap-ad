@@ -144,6 +144,7 @@ class LDAPBackendTest(TestCase):
 
     def test_user_groups(self):
         group_admin = Group.objects.create(name="MyAdmins")
+        Group.objects.create(name="MyPonies")
         self._init_settings(
             SEARCH_DN="o=test",
             USER_GROUPS_BY_GROUP={'MyAdmins': 'cn=superuser,dc=test_not_found',
@@ -168,6 +169,7 @@ class LDAPBackendTest(TestCase):
 
     def test_user_groups_001(self):
         """ Test for groups list requirements """
+        Group.objects.create(name="MyPonies")
         self._init_settings(
             SEARCH_DN="o=test",
             USER_GROUPS_BY_GROUP={
