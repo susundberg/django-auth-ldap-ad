@@ -16,10 +16,10 @@ apt:
 sudo: false
  
 install: 
- - pip install --verbose Django==$DJANGO_VERSION
- - pip install --verbose .
- - pip install --verbose -r testing-ci/requirements.txt 
- - pip install --verbose pep8 pyflakes
+ - pip install Django==$DJANGO_VERSION
+ - pip install .
+ - pip install -r testing-ci/requirements.txt 
+ - pip install pep8 pyflakes
 
 before_script:
  - pep8 --ignore=E501 django_auth_ldap_ad/
