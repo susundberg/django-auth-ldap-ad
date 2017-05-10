@@ -13,5 +13,5 @@ setup(
     version = "2.0.0",
     packages = ["django_auth_ldap_ad"],
     long_description = long_description,
-    install_requires = ["python-ldap", "Django>=1.4,<=1.9"]
+    install_requires = ["python-ldap", "Django>=1.4,<=1.9", "six"]
 )
