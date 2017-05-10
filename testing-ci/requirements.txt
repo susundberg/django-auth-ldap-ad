@@ -1,3 +1,2 @@
 mockldap
-python-ldap
 
