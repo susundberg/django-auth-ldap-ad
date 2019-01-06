@@ -12,7 +12,7 @@ Problem is that not all AD setups support TLS. So if SASL is not used the passwo
 While adding support for django-auth-ldap would have been one option, the library looked too heavy for my usecase, and googling gave me messy looking snippet from [snippets](https://djangosnippets.org/snippets/501/) i decided to make minimal AD-backend of my own.
 
 ## Status
-The project has not been maintained / updated. Use with care. Issues:
+The project **has not been maintained** / updated. Use with care. Issues:
  * Django version is old and one should upgrade this package for later django version. Please make pull request. 
   * There is good start on writing the whole thing in python3 https://github.com/susundberg/django-auth-ldap-ad/pull/13 that was not merged since it was not tested on target.
 
