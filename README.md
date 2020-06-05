@@ -1,7 +1,7 @@
 django-auth-ldap-ad
-
-
 ===================
+
+
 ## Status
 The project **is not maintained**. Use with extreme caution. Issues:
  * Django version is old and one should upgrade this package for later django version. Please make pull request. 
