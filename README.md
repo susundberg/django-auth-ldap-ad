@@ -1,5 +1,16 @@
 django-auth-ldap-ad
+
+
 ===================
+## Status
+The project **is not maintained**. Use with extreme caution. Issues:
+ * Django version is old and one should upgrade this package for later django version. Please make pull request. 
+  * There is good start on writing the whole thing in python3 https://github.com/susundberg/django-auth-ldap-ad/pull/13 that was not merged since it was not tested on target.
+  * Security advisory GHSA-3gh2-xw74-jmcw (high severity) is effective on this repository.
+
+
+USE WITH EXTREME CARE. YOU HAVE BEEN WARNED.
+
 
 
 ## Why
@@ -10,13 +21,6 @@ I created this project since i could not find proper way of doing binding with S
 Problem is that not all AD setups support TLS. So if SASL is not used the password and username when doing the bind is sent cleartext over the network. SASL provides some security with for example DIGEST-MD5.
 
 While adding support for django-auth-ldap would have been one option, the library looked too heavy for my usecase, and googling gave me messy looking snippet from [snippets](https://djangosnippets.org/snippets/501/) i decided to make minimal AD-backend of my own.
-
-## Status
-The project **has not been maintained** / updated. Use with care. Issues:
- * Django version is old and one should upgrade this package for later django version. Please make pull request. 
-  * There is good start on writing the whole thing in python3 https://github.com/susundberg/django-auth-ldap-ad/pull/13 that was not merged since it was not tested on target.
-
-USE WITH CARE. YOU HAVE BEEN WARNED.
 
 
 ## Installation
